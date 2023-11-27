@@ -15802,8 +15802,8 @@ const dataset={
   };
 
 let temps=dataset['monthlyVariance'];
-const padding=50;
-const h=600;
+const padding=100;
+const h=800;
 const w=1200;
 const svgX=(window.innerWidth-w)/2;
 const svgY=(window.innerHeight-h)/2;
@@ -15821,38 +15821,37 @@ const xAxis=d3.axisBottom(xScale).tickFormat(x=>x.toString());
 const yAxis=d3.axisLeft(yScale).tickFormat(y=>d3.timeFormat('%B')(d3.timeParse('%m')(y.toString())));
 // Creating a y-axis, making sure to show the tick labels as month names, not numbers
 
-const svg=d3.select('body').append('svg').attr('width',w).attr('height',h).attr('x',svgX).attr('y',svgY);
+const svg=d3.select('body').append('svg').attr('width',w).attr('height',h).attr('x',svgX).attr('y',500);
 
-svg.append('g').call(xAxis).attr("transform","translate(0,"+(h-1.25*padding)+")").attr("id","x-axis");
+svg.append('g').call(xAxis).attr("transform","translate(0,"+(h-1.5*padding)+")").attr("id","x-axis");
 // Adding x and y axes
 svg.append('g').call(yAxis).attr('transform','translate('+1.5*padding+',0)').attr('id','y-axis');
 
 
 svg.append('text').attr('x',w/2).attr('y',padding/2).text("World Temperatures").attr('id','title').attr('text-anchor','middle');
+svg.append('text').attr('x',w/2).attr('y',padding/2+30).text("(World Temp From 1753 to 2015. Base Temp: 8.66)").attr('id','description').attr('text-anchor','middle');
+
 
 // For each member of the dataset, add a rectangle 
 svg.selectAll("rect").data(temps).enter().append("rect")
 .attr("x",d=>xScale(d['year'])).attr("y",d=>yScale(d['month']))
 .attr("width",10*(w-padding)/(temps.length-1)).attr("height",d=>(h-2*padding)/12)
 .attr("variance",x=>x.variance).attr('class',"cell")
-.attr('fill',x=>varToColor(x))
+.attr('fill',x=>varToColor(x.variance))
 .attr('data-month',x=>x.month).attr('data-year',x=>x.year).attr('data-temp',x=>(8.66+x.variance))
 
 console.log(varToColor(-2))
 console.log(varToColor(temps[0].variance))
 
 //// Adding a legend 
-/***
- * 
- * const legendY=h+padding;
- * const colors=['red','orange','yellow','green']
- * const legend=d3.select('body').append('svg')
- * .attr('x',padding).attr('y',legendY);
- * const legendAxis=d3.axisBottom([-4,4]).tickFormat(x=>x.toString()).attr('id','x-axis');
- * legend.selectAll('rect').data(colors).enter().append('rect')
- * .attr('x',c=>c[indexOfC]).attr('y',legendY)
- * .attr('fill',c=>c)
- * 
- * svg.
- * 
- */
+ 
+ const legendY=h+4*padding;
+ const colors=['red','orange','yellow','green']
+ const legend=d3.select('body').append('svg')
+ .attr('x',padding).attr('y',legendY);
+ const legendAxis=d3.axisBottom([-4,4]).tickFormat(x=>x.toString()).attr('id','x-axis');
+ legend.selectAll('rect').data(colors).enter().append('rect')
+ .attr('x',c=>c[indexOfC]).attr('y',legendY)
+ .attr('fill',c=>c);
+ legend.append('text').attr('id','legend-title').text("Legend").attr('x',5).attr('y',5);
+ 
