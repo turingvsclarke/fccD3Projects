@@ -15,10 +15,10 @@
 // Define a function to map variance to color
 function varToColor(variance){
   // Going to have four cases here. May change depending on how it looks
-  color="red";
+  let color="red";
   if(variance>-3){
     color="orange";
-    if(varaince>-1){
+    if(variance>-1){
       if(variance>1){
         color="yellow";
         if(variance>3){
@@ -15813,18 +15813,17 @@ const minYear=d3.min(temps,t=>t.year);
 const xScale=d3.scaleLinear().domain([d3.min(temps,t=>t.year),d3.max(temps,t=>t.year)]).range([1.5*padding,w-padding]);
 const yScale=d3.scaleLinear().domain([d3.min(temps,t=>t.month),d3.max(temps,t=>t.month)]).range([padding,h-2*padding]);
 
-
 // Adding an x scale for the year
 
 // Creating an x-axis
-const xAxis=d3.axisBottom(xScale).tickFormat(x=>x.toString()).attr('id','x-axis');
+const xAxis=d3.axisBottom(xScale).tickFormat(x=>x.toString());
 
-const yAxis=d3.axisLeft(yScale).tickFormat(y=>d3.timeFormat('%B')(d3.timeParse('%m')(y.toString()))).attr('id','y-axis');
+const yAxis=d3.axisLeft(yScale).tickFormat(y=>d3.timeFormat('%B')(d3.timeParse('%m')(y.toString())));
 // Creating a y-axis, making sure to show the tick labels as month names, not numbers
 
 const svg=d3.select('body').append('svg').attr('width',w).attr('height',h).attr('x',svgX).attr('y',svgY);
 
-svg.append('g').call(xAxis).attr("transform","translate(0,"+(h-padding)+")").attr("id","x-axis");
+svg.append('g').call(xAxis).attr("transform","translate(0,"+(h-1.25*padding)+")").attr("id","x-axis");
 // Adding x and y axes
 svg.append('g').call(yAxis).attr('transform','translate('+1.5*padding+',0)').attr('id','y-axis');
 
@@ -15836,13 +15835,24 @@ svg.selectAll("rect").data(temps).enter().append("rect")
 .attr("x",d=>xScale(d['year'])).attr("y",d=>yScale(d['month']))
 .attr("width",10*(w-padding)/(temps.length-1)).attr("height",d=>(h-2*padding)/12)
 .attr("variance",x=>x.variance).attr('class',"cell")
-.attr('fill','blue');
+.attr('fill',x=>varToColor(x))
 .attr('data-month',x=>x.month).attr('data-year',x=>x.year).attr('data-temp',x=>(8.66+x.variance))
-console.log(varToColor(-2))
 
-// Set the fill color
-let bars=document.getElementsByClassName('bar');
-for(bar in bars){
-  let variance=bar.getAttribute('variance');
-  bar.setAttribute('fill',varToColor(variance));
-}
+console.log(varToColor(-2))
+console.log(varToColor(temps[0].variance))
+
+//// Adding a legend 
+/***
+ * 
+ * const legendY=h+padding;
+ * const colors=['red','orange','yellow','green']
+ * const legend=d3.select('body').append('svg')
+ * .attr('x',padding).attr('y',legendY);
+ * const legendAxis=d3.axisBottom([-4,4]).tickFormat(x=>x.toString()).attr('id','x-axis');
+ * legend.selectAll('rect').data(colors).enter().append('rect')
+ * .attr('x',c=>c[indexOfC]).attr('y',legendY)
+ * .attr('fill',c=>c)
+ * 
+ * svg.
+ * 
+ */
