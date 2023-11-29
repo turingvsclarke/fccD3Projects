@@ -1,5 +1,5 @@
 // Import data from a json file
-
+//import * as d3 from d3;
 /** Dataset is {
     "baseTemperature": 8.66,
     "monthlyVariance": [
@@ -19,6 +19,7 @@ function varToColor(variance){
   if(variance>-3){
     color="orange";
     if(variance>-1){
+      color='blue';
       if(variance>1){
         color="yellow";
         if(variance>3){
@@ -15845,13 +15846,24 @@ console.log(varToColor(temps[0].variance))
 
 //// Adding a legend 
  
- const legendY=h+4*padding;
- const colors=['red','orange','yellow','green']
+ const legendY=svgY+h+4.5*padding;
+ const colors=['red','orange','yellow','blue','green']
  const legend=d3.select('body').append('svg')
- .attr('x',padding).attr('y',legendY);
- const legendAxis=d3.axisBottom([-4,4]).tickFormat(x=>x.toString()).attr('id','x-axis');
+ .attr('x',2*padding).attr('y',legendY)
+ .attr('width',300).attr('height',200)
+ .attr('id','legend');
+
+ // This is not showing up
+ const legendScale=d3.scaleLinear().domain([-5,5]).range([0,250]);
+ const legendAxis=d3.axisBottom(legendScale);
+ 
+ legend.append('text').attr('id','legend-title').text("Legend")
+ .attr('x',2*padding+15).attr('y',40).attr('text-anchor','middle');
  legend.selectAll('rect').data(colors).enter().append('rect')
- .attr('x',c=>c[indexOfC]).attr('y',legendY)
- .attr('fill',c=>c);
- legend.append('text').attr('id','legend-title').text("Legend").attr('x',5).attr('y',5);
+ .attr('x',(c,i)=>.5*padding+50*i).attr('y',50)
+ .attr('fill',c=>c).attr('width',50).attr('height',50);
+
+ legend.append('g').call(legendAxis).attr('id','legend-axis').attr('transform','translate('+.5*padding+',100)');
+
+ 
  
