@@ -15817,12 +15817,12 @@ const yScale=d3.scaleLinear().domain([d3.min(temps,t=>t.month),d3.max(temps,t=>t
 // Adding an x scale for the year
 
 // Creating an x-axis
-const xAxis=d3.axisBottom(xScale).tickFormat(x=>x.toString());
+const xAxis=d3.axisBottom(xScale).tickFormat(x=>x.toString()).ticks(20);
 
-const yAxis=d3.axisLeft(yScale).tickFormat(y=>d3.timeFormat('%B')(d3.timeParse('%m')(y.toString())));
+const yAxis=d3.axisLeft(yScale).tickFormat(y=>d3.timeFormat('%B')(d3.timeParse('%m')(y.toString()))).ticks(9);
 // Creating a y-axis, making sure to show the tick labels as month names, not numbers
 
-const svg=d3.select('body').append('svg').attr('width',w).attr('height',h).attr('x',svgX).attr('y',500);
+const svg=d3.select('body').append('svg').attr('width',w).attr('height',h).attr('x',svgX).attr('y',500).attr('id','world-temps');
 
 svg.append('g').call(xAxis).attr("transform","translate(0,"+(h-1.5*padding)+")").attr("id","x-axis");
 // Adding x and y axes
@@ -15839,31 +15839,42 @@ svg.selectAll("rect").data(temps).enter().append("rect")
 .attr("width",10*(w-padding)/(temps.length-1)).attr("height",d=>(h-2*padding)/12)
 .attr("variance",x=>x.variance).attr('class',"cell")
 .attr('fill',x=>varToColor(x.variance))
-.attr('data-month',x=>x.month).attr('data-year',x=>x.year).attr('data-temp',x=>(8.66+x.variance))
+.attr('data-month',x=>x.month-1).attr('data-year',x=>x.year).attr('data-temp',x=>(8.66+x.variance))
 
 console.log(varToColor(-2))
 console.log(varToColor(temps[0].variance))
 
 //// Adding a legend 
  
- const legendY=svgY+h+4.5*padding;
+
+
+ const legendY=svgY+h;
+ const rectWidth=20;
+ const legendWidth=800;
+ const legendHeight=100;
+
  const colors=['red','orange','yellow','blue','green']
  const legend=d3.select('body').append('svg')
  .attr('x',2*padding).attr('y',legendY)
- .attr('width',300).attr('height',200)
+ .attr('width',legendWidth).attr('height',legendHeight)
  .attr('id','legend');
 
+
  // This is not showing up
- const legendScale=d3.scaleLinear().domain([-5,5]).range([0,250]);
- const legendAxis=d3.axisBottom(legendScale);
- 
+ const legendScale=d3.scaleLinear().domain([-7,7]).range([0,7*rectWidth]);
+ const legendAxis=d3.axisBottom(legendScale).ticks(5);
+
  legend.append('text').attr('id','legend-title').text("Legend")
- .attr('x',2*padding+15).attr('y',40).attr('text-anchor','middle');
+ .attr('x',2*padding+20).attr('y',40).attr('text-anchor','middle');
  legend.selectAll('rect').data(colors).enter().append('rect')
- .attr('x',(c,i)=>.5*padding+50*i).attr('y',50)
- .attr('fill',c=>c).attr('width',50).attr('height',50);
+ .attr('x',(c,i)=>1.5*padding+rectWidth*(i+1)).attr('y',50)
+ .attr('fill',c=>c).attr('width',rectWidth).attr('height',rectWidth);
 
- legend.append('g').call(legendAxis).attr('id','legend-axis').attr('transform','translate('+.5*padding+',100)');
+ legend.append('g').call(legendAxis).attr('id','legend-axis').attr('transform','translate('+(1.5*padding)+','+(50+rectWidth)+')');
 
- 
+ /***
+  * 1. Add padding to the legend to center it
+  * 2. Center the text and axes
+  * 
+  */
  
