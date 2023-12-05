@@ -136,39 +136,5 @@ console.log(varToColor(temps[0].variance))
 
  legend.append('g').call(legendAxis).attr('id','legend-axis').attr('transform','translate('+(1.5*padding)+','+(50+rectWidth)+')');
 
- /***
-  * 1. Add padding to the legend to center it
-  * 2. Center the text and axes
-  * 
-  */
-
- // Calling the tooltip
- 
-/*** 
- let d={
-  "Time": "36:55",
-  "Place": 2,
-  "Seconds": 2215,
-  "Name": "Marco Pantani",
-  "Year": 1997,
-  "Nationality": "ITA",
-  "Doping": "Alleged drug use during 1997 due to high hermatocrit levels",
-  "URL": "https://en.wikipedia.org/wiki/Marco_Pantani#Alleged_drug_use"
-};
-let tooltip=document.getElementById("tooltip");
-
-tooltip.innerHTML="Name: "+d["Name"]+"</br>"+"Year: 1997"+"\nMore Info:  <a href=''"+d["URL"]+"'>Wikipedia</a>";
-
-function addClassTarget(cl){
-let targets=document.getElementsByClassName(cl);
-for(let i=0;i<targets.length;i++){
-  let target=targets[i];
-  target.addEventListener("mouseover",tooltipDisplay);
-  target.addEventListener("mouseout",tooltipHide);
-  }
-}
-***/
-
-
  
  
