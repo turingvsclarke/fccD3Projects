@@ -1,0 +1,14 @@
+#container {
+    border: solid black 1px;
+}
+#map {
+    border: solid blue 1px;
+}
+h1 {
+    margin: auto;
+    text-align: center;
+}
+#tooltipContainer {
+    position: absolute;
+    padding: 10px;
+}
