@@ -1,4 +1,5 @@
 // Import data from a json file
+import dataset from "./temps.json" assert {type: 'json'};
 //import * as d3 from d3;
 /** Dataset is {
     "baseTemperature": 8.66,
@@ -31,7 +32,7 @@ function varToColor(variance){
   return color;
 }
 
-const dataset=json_util.load_from_path('./temps.json');
+//const dataset=json_util.load_from_path('./temps.json');
 
 let temps=dataset['monthlyVariance'];
 const padding=100;
