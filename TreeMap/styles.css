@@ -1,0 +1,16 @@
+svg {
+    border: solid black 1px;
+}
+#description, #title {
+   
+    text-align: center;
+
+}
+#tooltipContainer {
+    opacity: 90%;
+    position: absolute;
+    padding: 10px;
+}
+#legend {
+    left: 150px;
+}
